@@ -11,7 +11,7 @@ const TradingCard = db.define('TradingCard', {
         type: DataTypes.STRING,
         allowNull: false
     },
-    category: {
+    team: {
         type: DataTypes.STRING,
         allowNull: true    
     },
@@ -20,7 +20,7 @@ const TradingCard = db.define('TradingCard', {
         allowNull: false,       
     },
     value: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.FLOAT,
         allowNull: false
     },
     rare: {
@@ -29,4 +29,4 @@ const TradingCard = db.define('TradingCard', {
     }
 });
 
-module.exports = TradingCard;
+module.exports = { db, TradingCard};
