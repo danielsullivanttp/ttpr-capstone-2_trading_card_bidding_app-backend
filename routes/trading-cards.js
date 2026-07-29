@@ -1,12 +1,39 @@
 const express = require("express");
-const router = express.Router();
-const { TradingCard } = require("../models/TradingCard");
+const router = express.Router(); //groups one resource's routes in one file.
+const { TradingCard } = require("../models");
+const { Op } = require("sequelize");
 
 // GET all TradingCards
 router.get("/", async (req, res) => {
-  const tradingCards = await TradingCard.findAll();
-  if (!tradingCards) return res.status(404).json({ error: "Trading Cards Not Found!!!" });
-  res.json(tradingCards);
+  try {
+    const { name, team, status, value, rare } = req.query;
+    const where = {};
+
+    if (name) {
+      where.name = { [Op.iLike]: `%${name}%` }; // contains, case-insensitive
+    }
+
+    if (team) {
+      where.team = { [Op.iLike]: `%${team}%` }; // contains, case-insensitive
+    }
+
+    if (status) {
+      where.status = status; // contains, case-sensitive
+    }
+
+    if (rare != undefined) {
+      where.rare = req.query.rare === "true"; // must be set up like this to request a boolean value
+    }
+
+    if (value != undefined) {
+      where.value = Number(value); // exact match
+    }
+
+    const tradingCards = await TradingCard.findAll({ where });
+    res.json(tradingCards);
+  } catch (err) {
+    console.log(err);
+  }
 });
 
 // GET /TradingCards/:id- return a single TradingCard by id
@@ -14,7 +41,8 @@ router.get("/:id", async (req, res) => {
   try {
     const id = Number(req.params.id);
     const tradingcard = await TradingCard.findByPk(id);
-    if (!tradingcard) return res.status(404).json({ error: "Trading Card Not Found!!!" });
+    if (!tradingcard)
+      return res.status(404).json({ error: "Trading Card Not Found!!!" });
     console.log("TradingCard id received: ", req.params.id);
     res.json(tradingcard);
   } catch (err) {
