@@ -13,7 +13,8 @@ app.get('/health', (req, res) => {
     res.json({status: "ok"});
 });
 
-app.use("/TradingCard", TradingCardsRouter);
+app.use("/TradingCard", TradingCardsRouter); // (Mounting router from "./routes/trading-cards") adds the /TradingCard prefix
+// ****Isn't repeated in routes/trading-cards.js***
 
 async function startApp(){
     await db.sync();
