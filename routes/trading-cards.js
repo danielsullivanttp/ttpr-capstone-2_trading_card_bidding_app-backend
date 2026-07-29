@@ -3,6 +3,13 @@ const router = express.Router(); //groups one resource's routes in one file.
 const { TradingCard } = require("../models");
 const { Op } = require("sequelize");
 
+async function requireName(req, res, next){
+  if(!req.body.name){
+     return res.status(400).json("Name is missing, please enter one!!!");
+  }
+     next();
+}
+
 // GET all TradingCards
 router.get("/", async (req, res) => {
   try {
@@ -28,10 +35,9 @@ router.get("/", async (req, res) => {
     if (value != undefined) {
       where.value = Number(value); // exact match
     }
-
     const tradingCards = await TradingCard.findAll({ where });
     res.json(tradingCards);
-  } catch (err) {
+  } catch(err) {
     console.log(err);
   }
 });
@@ -51,16 +57,19 @@ router.get("/:id", async (req, res) => {
 });
 
 // POST /TradingCards- create a new TradingCard
-router.post("/", async (req, res) => {
+router.post("/", requireName, async (req, res) => {
   try {
     const tradingCard = await TradingCard.create(req.body);
     if (!tradingCard) res.status(404).json("Trading Card Not Created!!!");
     console.log(tradingCard);
     res.status(201).json(tradingCard);
   } catch (err) {
-    console.log(err);
-  }
-});
+    if (err.name === "SequelizeValidationError") {
+      return res.status(400).json({ error: err.errors[0].message });
+      console.log(err.name);
+    }
+    next(err); // hand anything unexpected to the central error hadler
+}});
 
 // PATCH /TradingCards- Update Tradingcard data
 router.patch("/:id", async (req, res) => {
