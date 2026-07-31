@@ -3,6 +3,7 @@ const app = express();
 const PORT = 3000;
 const { db } = require("./models");
 const TradingCardsRouter = require("./routes/trading-cards");
+const cors = require('cors')
 
 async function logger(req, res, next){
   console.log(`>>>>>Logging Request Method:  ${req.method }, ${req.originalURL}`);
@@ -10,7 +11,7 @@ async function logger(req, res, next){
 }
 app.use(logger);
 app.use(express.json());
-
+app.use(cors());
 
 
 app.get("/", (req, res) => {

@@ -3,11 +3,11 @@ const router = express.Router(); //groups one resource's routes in one file.
 const { TradingCard } = require("../models");
 const { Op } = require("sequelize");
 
-async function requireName(req, res, next){
-  if(!req.body.name){
-     return res.status(400).json("Name is missing, please enter one!!!");
+async function requireName(req, res, next) {
+  if (!req.body.name) {
+    return res.status(400).json("Name is missing, please enter one!!!");
   }
-     next();
+  next();
 }
 
 // GET all TradingCards
@@ -37,7 +37,7 @@ router.get("/", async (req, res) => {
     }
     const tradingCards = await TradingCard.findAll({ where });
     res.json(tradingCards);
-  } catch(err) {
+  } catch (err) {
     console.log(err);
   }
 });
@@ -69,7 +69,8 @@ router.post("/", requireName, async (req, res) => {
       console.log(err.name);
     }
     next(err); // hand anything unexpected to the central error hadler
-}});
+  }
+});
 
 // PATCH /TradingCards- Update Tradingcard data
 router.patch("/:id", async (req, res) => {
