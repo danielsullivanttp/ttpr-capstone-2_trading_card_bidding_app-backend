@@ -1,32 +1,20 @@
 const { DataTypes } = require("sequelize");
 const db = require("../db");
 
-const FavoritCards = db.define("FavoriteCard", {
+const FavoriteCards = db.define("FavoriteCard", {
   id: {
     type: DataTypes.INTEGER,
     autoIncrement: true,
-    primaryKey: true,
+    primaryKey: true
   },
-  name: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  team: {
-    type: DataTypes.STRING,
-    allowNull: true,
-  },
-  status: {
-    type: DataTypes.ENUM("Available", "Unavailable"),
-    allowNull: false,
-  },
-  value: {
-    type: DataTypes.FLOAT,
-    allowNull: false,
-  },
-  rare: {
-    type: DataTypes.BOOLEAN,
-    allowNull: false,
-  },
+//   userId: {
+//     type: DataTypes.INTEGER,
+//     allowNull: false
+//   },
+  cardId: {
+    type: DataTypes.INTEGER,
+    allowNull: false
+  }
 });
 
-module.exports = Favoritecards;
+module.exports = FavoriteCards;
