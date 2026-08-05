@@ -47,7 +47,7 @@ router.post(/*Users/:id/favorites*/"/", async (req, res) => {
 });
 
 // Delete User(Later) Favorite
-router.delete(/*Users/:id/favorites/:cardId*/"/", async (req, res) => {
+router.delete(/*Users/:id/favorites/*/"/:cardId", async (req, res) => {
     try{
         const {/*id: userId,*/ cardId} = req.body;
 
